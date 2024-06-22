@@ -2,8 +2,9 @@ import mongoose,{Document, Schema, PopulatedDoc, Types} from "mongoose";
 export interface IUser extends Document {
     email:string
     password:string
-    name:string
+    userName:string
     pic:string
+    facebook_id:string
 }
 
 const UserSchema : Schema = new Schema({
@@ -16,7 +17,6 @@ const UserSchema : Schema = new Schema({
     },
     facebook_id:{
         type:String,
-        unique:true,
         default:null
     },
 
@@ -26,7 +26,7 @@ const UserSchema : Schema = new Schema({
         trim:true
 
     },
-    name:{
+    userName:{
         type:String,
         require:true,
         

@@ -7,5 +7,6 @@ const router = Router()
 
 router.post('/create-account-withF',AuthController.CreateAccountWithFacebook)
 router.post('/create-account',AuthController.createAccount)
+router.post('/login', AuthController.login)
 
 export default router
