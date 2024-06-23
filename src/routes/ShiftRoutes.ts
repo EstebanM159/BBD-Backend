@@ -3,16 +3,14 @@ import {body, param} from 'express-validator'
 import { ShiftController } from '../controllers/ShiftController'
 import { handleInputErrors } from '../middlewares/validation'
 import { dateExists } from '../middlewares/date'
+import { authenticate } from '../middlewares/auth'
 
 
 const router = Router()
 
 // Crear turno
 router.post ('/new',
-    body('clientName').isString().withMessage('El nombre del cliente es obligario'),
-    body('date').isString().withMessage('El dia es obligatorio'),
-    body('time').isString().withMessage('La hora es obligatoria'),
-    body('service').isString().withMessage('El servicio es obligatorio'),
+    authenticate,
     handleInputErrors,
     ShiftController.createDate
 )

@@ -6,8 +6,7 @@ import { generateJWT } from "../utils/jwt";
 export class AuthController {
     static CreateAccountWithFacebook = async (req:Request, res:Response) => {
         try {
-            const {email, id} = req.body
-            console.log(id)
+            const {email, id, name} = req.body
             const userExists = await User.findOne({email})
             if(userExists){
                 const error = new Error('El usuario ya esta registrado')
@@ -15,6 +14,7 @@ export class AuthController {
             }
             const user = new User(req.body)
             user.facebook_id = id
+            user.userName = name
             await user.save()
             res.send('Cuenta creada correctamente')
         } catch (error) {
@@ -24,7 +24,6 @@ export class AuthController {
     }
     static createAccount = async (req:Request,res:Response)=>{
         try {
-            console.log(req.body)
             const {password, email} = req.body
             const userExists = await User.findOne({email})
             if(userExists){
@@ -40,6 +39,20 @@ export class AuthController {
             res.status(500).json({error:'Hubo un error'})
         }
     }
+    static loginWithFacebook = async ( req:Request,res:Response)=>{
+        try {
+            const {email} = req.body
+            const user = await User.findOne({email})
+            if(!user){
+                const error = new Error('Usuario no registrado')
+                return res.status(404).json({error : error.message})
+            }
+            const token = generateJWT({id:user._id})
+            res.send(token)
+        } catch (error) {
+            res.status(500).json({error:'Hubo un error'})
+        }
+    }
     static login = async (req:Request,res:Response)=>{
         try {
             const {email, password} = req.body
@@ -50,18 +63,23 @@ export class AuthController {
                 return res.status(404).json({error : error.message})
             }
             // Verifico si tiene contraseña
-            if(password){
-                const isPasswordCorrect = await checkPassword(password, user.password)
-                if(!isPasswordCorrect){
-                    const error = new Error('Password incorrecto.')
-                    return res.status(401).json({error : error.message})
-                }
+            const isPasswordCorrect = await checkPassword(password, user.password)
+            if(!isPasswordCorrect){
+                const error = new Error('Contraseña incorrecta.')
+                return res.status(401).json({error : error.message})
             }
             // Si los datos son correctos se genera el AUTH_TOKEN y lo devuelve
             const token = generateJWT({id:user._id})
             res.send(token)
             // Esto se consume en el frontend
-            
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({error:'Hubo un error'})
+        }
+    }
+    static user = async (req:Request,res:Response)=>{
+        try {
+             return res.json(req.user)
         } catch (error) {
             console.log(error)
             res.status(500).json({error:'Hubo un error'})
