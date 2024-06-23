@@ -7,6 +7,10 @@ const router = Router()
 
 router.post('/create-account-withF',AuthController.CreateAccountWithFacebook)
 router.post('/create-account',AuthController.createAccount)
-router.post('/login', AuthController.login)
+router.post('/login',
+    body('email').isEmail().withMessage('Email no valido'),
+    handleInputErrors,
+     AuthController.login
+)
 
 export default router
