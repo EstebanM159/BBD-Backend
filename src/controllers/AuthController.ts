@@ -57,10 +57,11 @@ export class AuthController {
                     return res.status(401).json({error : error.message})
                 }
             }
-            // // Si los datos son correctos se genera el AUTH_TOKEN y lo devuelve
-            // const token = generateJWT({id:user._id})
-            // // Esto se consume en el frontend
-            // res.send(token)
+            // Si los datos son correctos se genera el AUTH_TOKEN y lo devuelve
+            const token = generateJWT({id:user._id})
+            res.send(token)
+            // Esto se consume en el frontend
+            
         } catch (error) {
             console.log(error)
             res.status(500).json({error:'Hubo un error'})
