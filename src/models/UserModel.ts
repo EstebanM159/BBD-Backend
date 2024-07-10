@@ -20,7 +20,6 @@ const UserSchema : Schema = new Schema({
         type:String,
         default:null
     },
-
     password:{
         type:String,
         default:null,
@@ -30,19 +29,21 @@ const UserSchema : Schema = new Schema({
     userName:{
         type:String,
         require:true,
-        
     },
     picture:{
             data:{
                 height:{
-                    type:Number
+                    type:Number,
+                    default:0
                 },
                 width:{
-                    type:Number
+                    type:Number,
+                    default:0
                 },
                 url:{
                     type:String,
-                    trim:true
+                    trim:true,
+                    default:''
                 }
             }
     }
