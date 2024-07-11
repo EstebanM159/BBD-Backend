@@ -34,9 +34,6 @@ export class ShiftController {
      static getDateById = async (req:Request,res:Response) =>{
         try {
             const date = await Date.find({clientId: req.user?.id})
-            if(date.length===0){
-                return res.json('No tenes turno')
-            }
             res.json(date)
         } catch (error) {
             console.log(error)

@@ -35,6 +35,8 @@ router.delete ('/:dateId',
     ShiftController.deleteDate
 )
 // traer turnos
-router.get('/', ShiftController.getDates)
+router.get('/',
+    authenticate,
+     ShiftController.getDates)
 // react-facebook-login devuelve un objeto info del usuario
 export default router
