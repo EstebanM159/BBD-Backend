@@ -7,7 +7,14 @@ import { authenticate } from '../middlewares/auth'
 
 
 const router = Router()
+// Obtener turnos
 
+// Obtener turno por id
+router.get('/',
+    authenticate,
+    handleInputErrors,
+    ShiftController.getDateById
+)
 // Crear turno
 router.post ('/new',
     authenticate,

@@ -5,8 +5,9 @@ export class ShiftController {
         res.send('Desde getDates')
     }
     static createDate =  async(req:Request,res:Response) =>{
-        const date = new Date(req.body)
         try {
+            const date = new Date(req.body)
+            date.clientId = req.user?.id
             await date.save()
             res.send('Turno creado')
         } catch (error) {
@@ -15,7 +16,7 @@ export class ShiftController {
     }
     static updateDate = async (req:Request,res:Response) =>{
         // Lo busco con el middleware
-        req.date.clientName = req.body.clientName
+        // Verificar que el usuario que la creo sea el que esta editando
         req.date.date = req.body.date
         req.date.time = req.body.time
         req.date.service = req.body.service
@@ -30,4 +31,16 @@ export class ShiftController {
             console.log(error)
         }
     }
+     static getDateById = async (req:Request,res:Response) =>{
+        try {
+            const date = await Date.find({clientId: req.user?.id})
+            if(date.length===0){
+                return res.json('No tenes turno')
+            }
+            res.json(date)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    
 }
