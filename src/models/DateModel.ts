@@ -2,7 +2,7 @@ import mongoose,{Document, Schema, PopulatedDoc, Types} from "mongoose";
 import { IUser } from "./UserModel";
 // PopulatedDoc<IUser & Document>, //tiene que haber otro modelo para usuarios
 export interface IDate extends Document{
-    clientName:string,
+    clientId:Types.ObjectId,
     date:string,
     time:string,
     service:string
@@ -10,9 +10,9 @@ export interface IDate extends Document{
 
 const DateSchema: Schema = new Schema({
    
-    clientName:{
-        type:String,
-        required:true
+    clientId:{
+        type:Types.ObjectId,
+        ref:'User'
     },
     date:{
         type: String,
