@@ -8,7 +8,7 @@ import { authenticate } from '../middlewares/auth'
 
 const router = Router()
 // Obtener turnos
-
+router.param('dateId',dateExists)
 // Obtener turno por id
 router.get('/',
     authenticate,
@@ -22,8 +22,6 @@ router.post ('/new',
     ShiftController.createDate
 )
 router.put ('/:dateId/edit',
-    dateExists,
-    body('clientName').isString().withMessage('El nombre del cliente es obligario'),
     body('date').isString().withMessage('El dia es obligatorio'),
     body('time').isString().withMessage('La hora es obligatoria'),
     body('service').isString().withMessage('El servicio es obligatorio'),

@@ -1,8 +1,8 @@
 import mongoose,{Document, Schema, PopulatedDoc, Types} from "mongoose";
 import { IUser } from "./UserModel";
-// PopulatedDoc<IUser & Document>, //tiene que haber otro modelo para usuarios
 export interface IDate extends Document{
-    clientId:Types.ObjectId,
+    _id:Types.ObjectId,
+    clientId:PopulatedDoc<IUser & Document>,
     date:string,
     time:string,
     service:string
