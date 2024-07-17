@@ -15,7 +15,6 @@ export class ShiftController {
         }
     }
     static updateDate = async (req:Request,res:Response) =>{
-        // Lo busco con el middleware
         // Verificar que el usuario que la creo sea el que esta editando
         req.date.date = req.body.date
         req.date.time = req.body.time

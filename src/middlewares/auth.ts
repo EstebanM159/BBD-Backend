@@ -11,7 +11,7 @@ declare global {
 }
 
 export const authenticate = async (req:Request,res:Response, next:NextFunction) => {
-    const palabra = process.env.JWT_SECRET!
+    const palabra = process.env.JWT_SECRET
 
     const bearer = req.headers.authorization
     if(!bearer){
