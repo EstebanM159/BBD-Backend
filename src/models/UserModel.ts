@@ -6,6 +6,7 @@ export interface IUser extends Document {
     userName:string
     picture:string
     facebook_id:string
+    google_id:string
 }
 
 const UserSchema : Schema = new Schema({
@@ -20,6 +21,10 @@ const UserSchema : Schema = new Schema({
         type:String,
         default:null
     },
+    google_id:{
+        type:String,
+        default:null
+    },
     password:{
         type:String,
         default:null,
@@ -31,21 +36,9 @@ const UserSchema : Schema = new Schema({
         require:true,
     },
     picture:{
-            data:{
-                height:{
-                    type:Number,
-                    default:0
-                },
-                width:{
-                    type:Number,
-                    default:0
-                },
-                url:{
-                    type:String,
-                    trim:true,
-                    default:''
-                }
-            }
+        type:String,
+        trim:true,
+        default:''
     }
 })
 

@@ -28,6 +28,8 @@ router.post('/login',
     handleInputErrors,
     AuthController.login
 )
+router.post('/createAccount-withG', AuthController.createAccountWithGoogle)
+router.post('/login-withG', AuthController.loginWithGoogle)
 router.get('/user',
     authenticate,
     AuthController.user

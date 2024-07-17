@@ -9,8 +9,7 @@ declare global {
         }
     }
 }
-// const palabra = process.env.JWT_SECRET
-// console.log(palabra)
+
 export const authenticate = async (req:Request,res:Response, next:NextFunction) => {
     const palabra = process.env.JWT_SECRET!
 
