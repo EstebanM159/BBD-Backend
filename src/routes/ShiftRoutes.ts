@@ -28,6 +28,9 @@ router.put ('/:dateId/edit',
     handleInputErrors,
     ShiftController.updateDate
 )
+router.get('/times-avaibles/:dateDay',
+    ShiftController.getDatesByDay
+)
 router.delete ('/:dateId',
     dateExists,
     ShiftController.deleteDate

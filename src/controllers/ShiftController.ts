@@ -4,10 +4,20 @@ export class ShiftController {
     static getDates = async (req:Request,res:Response) =>{
         res.send('Desde getDates')
     }
+    static getDatesByDay = async (req:Request,res:Response) =>{
+        try {
+            const {dateDay} = req.params
+            const dates = await Date.find({date: dateDay})
+            const timeAvaibles = dates.map(date=> date.time)
+            res.json(timeAvaibles)
+        } catch (error) {
+            
+        }
+    }
     static createDate =  async(req:Request,res:Response) =>{
         try {
             const date = new Date(req.body)
-            date.clientId = req.user?.id
+            date.clientId = req.user.id
             await date.save()
             res.send('Turno creado')
         } catch (error) {
@@ -34,9 +44,9 @@ export class ShiftController {
         try {
             const date = await Date.find({clientId: req.user?.id})
             if(date.length === 0){
-                return res.send({date:'No tenes turno', time: ''})
+                return res.send({date:'No tenes turno', time: '',_id:'',clientId:''})
             }
-            res.json({ date: date[0].date, time: date[0].time })
+            res.json(date[0])
         } catch (error) {
             console.log(error)
         }
