@@ -7,11 +7,19 @@ export class ShiftController {
     static getDatesByDay = async (req:Request,res:Response) =>{
         try {
             const {dateDay} = req.params
+            console.log(dateDay)
             const dates = await Date.find({date: dateDay})
             const timeAvaibles = dates.map(date=> date.time)
             res.json(timeAvaibles)
         } catch (error) {
-            
+            console.log(error)
+        }
+    }
+    static getDateById =  async(req:Request,res:Response) =>{
+        try {
+            res.json(req.date)
+        } catch (error) {
+            console.log(error)
         }
     }
     static createDate =  async(req:Request,res:Response) =>{
@@ -40,11 +48,11 @@ export class ShiftController {
             console.log(error)
         }
     }
-     static getDateById = async (req:Request,res:Response) =>{
+     static getDateByClientId = async (req:Request,res:Response) =>{
         try {
             const date = await Date.find({clientId: req.user?.id})
             if(date.length === 0){
-                return res.send({date:'No tenes turno', time: '',_id:'',clientId:''})
+                return res.send({date:'No tenes turno', time: '',_id:'',clientId:'',service:''})
             }
             res.json(date[0])
         } catch (error) {

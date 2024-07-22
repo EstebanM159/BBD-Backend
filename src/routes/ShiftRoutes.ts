@@ -13,11 +13,14 @@ router.param('dateId',dateExists)
 router.get('/',
     authenticate,
     handleInputErrors,
-    ShiftController.getDateById
+    ShiftController.getDateByClientId
 )
 // Crear turno
 router.post ('/new',
     authenticate,
+    body('date').isString().withMessage('El dia es obligatorio'),
+    body('time').isString().withMessage('La hora es obligatoria'),
+    body('service').isString().withMessage('El servicio es obligatorio'),
     handleInputErrors,
     ShiftController.createDate
 )
@@ -31,13 +34,16 @@ router.put ('/:dateId/edit',
 router.get('/times-avaibles/:dateDay',
     ShiftController.getDatesByDay
 )
+router.get('/:dateId',
+    handleInputErrors,
+    ShiftController.getDateById
+)
 router.delete ('/:dateId',
-    dateExists,
+    handleInputErrors,
     ShiftController.deleteDate
 )
 // traer turnos
-router.get('/',
-    authenticate,
-     ShiftController.getDates)
-// react-facebook-login devuelve un objeto info del usuario
+// router.get('/',
+//     authenticate,
+//      ShiftController.getDates)
 export default router
