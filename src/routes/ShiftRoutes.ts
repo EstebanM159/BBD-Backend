@@ -4,6 +4,7 @@ import { ShiftController } from '../controllers/ShiftController'
 import { handleInputErrors } from '../middlewares/validation'
 import { dateExists } from '../middlewares/date'
 import { authenticate } from '../middlewares/auth'
+import { hasDate } from '../middlewares/hasDate'
 
 
 const router = Router()
@@ -18,6 +19,7 @@ router.get('/',
 // Crear turno
 router.post ('/new',
     authenticate,
+    hasDate,
     body('date').isString().withMessage('El dia es obligatorio'),
     body('time').isString().withMessage('La hora es obligatoria'),
     body('service').isString().withMessage('El servicio es obligatorio'),
