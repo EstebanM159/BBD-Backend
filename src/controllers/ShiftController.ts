@@ -7,19 +7,20 @@ export class ShiftController {
     static getDatesByDay = async (req:Request,res:Response) =>{
         try {
             const {dateDay} = req.params
-            console.log(dateDay)
             const dates = await Date.find({date: dateDay})
             const timeAvaibles = dates.map(date=> date.time)
             res.json(timeAvaibles)
         } catch (error) {
-            console.log(error)
+            res.status(500).json({error:'Hubo un error'})
+
         }
     }
     static getDateById =  async(req:Request,res:Response) =>{
         try {
             res.json(req.date)
         } catch (error) {
-            console.log(error)
+            res.status(500).json({error:'Hubo un error'})
+
         }
     }
     static createDate =  async(req:Request,res:Response) =>{
@@ -29,11 +30,16 @@ export class ShiftController {
             await date.save()
             res.send('Turno creado')
         } catch (error) {
-            console.log(error)
+            res.status(500).json({error:'Hubo un error'})
+
         }
     }
     static updateDate = async (req:Request,res:Response) =>{
         // Verificar que el usuario que la creo sea el que esta editando
+        if (req.date.clientId !== req.user._id){
+            const error = new Error('No esta autorizado')
+            return res.status(401).json({error:error.message})
+        }
         req.date.date = req.body.date
         req.date.time = req.body.time
         req.date.service = req.body.service
@@ -45,7 +51,8 @@ export class ShiftController {
             await req.date.deleteOne()
             res.send('Turno eliminado')
         } catch (error) {
-            console.log(error)
+            res.status(500).json({error:'Hubo un error'})
+
         }
     }
      static getDateByClientId = async (req:Request,res:Response) =>{
@@ -56,7 +63,8 @@ export class ShiftController {
             }
             res.json(date[0])
         } catch (error) {
-            console.log(error)
+            res.status(500).json({error:'Hubo un error'})
+
         }
     }
     

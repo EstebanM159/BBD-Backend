@@ -1,5 +1,5 @@
 import Router from 'express'
-import {body, param} from 'express-validator'
+import {body, param } from 'express-validator'
 import { ShiftController } from '../controllers/ShiftController'
 import { handleInputErrors } from '../middlewares/validation'
 import { dateExists } from '../middlewares/date'
@@ -27,6 +27,8 @@ router.post ('/new',
     ShiftController.createDate
 )
 router.put ('/:dateId/edit',
+    authenticate,
+    param('dateId').isMongoId().withMessage('Id no valido'),
     body('date').isString().withMessage('El dia es obligatorio'),
     body('time').isString().withMessage('La hora es obligatoria'),
     body('service').isString().withMessage('El servicio es obligatorio'),
@@ -37,6 +39,7 @@ router.get('/times-avaibles/:dateDay',
     ShiftController.getDatesByDay
 )
 router.get('/:dateId',
+    param('dateId').isMongoId().withMessage('Id no valido'),
     handleInputErrors,
     ShiftController.getDateById
 )
