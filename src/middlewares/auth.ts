@@ -11,19 +11,19 @@ declare global {
 }
 
 export const authenticate = async (req:Request,res:Response, next:NextFunction) => {
-    const palabra = process.env.JWT_SECRET
-
     const bearer = req.headers.authorization
+    console.log(bearer)
     if(!bearer){
         const error = new Error('No esta autorizado para ingresar a esta sección')
         return res.status(401).json({error:error.message})
     }
-    const [,token] = bearer.split(' ')
+    const [, token] = bearer.split(' ')
     try {
-        const decoded = jwt.verify(token, palabra)
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
         if(typeof decoded === 'object' && decoded.id){
-            const user = await User.findById(decoded.id).select('_id userName email picture')
+            const user = await User.findById(decoded.id).select('_id userName email picture role')
             if(user){
+                console.log(user.role)
                 req.user = user
                 next()
             }else{

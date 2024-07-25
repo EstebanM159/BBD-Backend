@@ -5,6 +5,7 @@ export interface IUser extends Document {
     password:string
     userName:string
     picture:string
+    role:string
     facebook_id:string
     google_id:string
 }
@@ -30,6 +31,10 @@ const UserSchema : Schema = new Schema({
         default:null,
         trim:true
 
+    },
+    role:{
+        type:String,
+        default:'client'
     },
     userName:{
         type:String,

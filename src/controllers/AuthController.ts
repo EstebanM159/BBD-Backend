@@ -122,11 +122,7 @@ export class AuthController {
         }
     }
     static user = async (req:Request,res:Response)=>{
-        try {
+            // console.log(req.user)
              return res.json(req.user)
-        } catch (error) {
-            console.log(error)
-            res.status(500).json({error:'Hubo un error'})
-        }
     }
 }

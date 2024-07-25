@@ -1,9 +1,6 @@
 import type { Request, Response } from "express";
 import Date from "../models/DateModel";
 export class ShiftController {
-    static getDates = async (req:Request,res:Response) =>{
-        res.send('Desde getDates')
-    }
     static getDatesByDay = async (req:Request,res:Response) =>{
         try {
             const {dateDay} = req.params
@@ -12,7 +9,6 @@ export class ShiftController {
             res.json(timeAvaibles)
         } catch (error) {
             res.status(500).json({error:'Hubo un error'})
-
         }
     }
     static getDateById =  async(req:Request,res:Response) =>{
