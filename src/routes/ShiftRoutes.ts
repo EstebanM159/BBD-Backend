@@ -28,7 +28,7 @@ router.post ('/new',
 )
 router.put ('/:dateId/edit',
     authenticate,
-    param('dateId').isMongoId().withMessage('Id no valido'),
+    dateExists,
     body('date').isString().withMessage('El dia es obligatorio'),
     body('time').isString().withMessage('La hora es obligatoria'),
     body('service').isString().withMessage('El servicio es obligatorio'),
@@ -44,6 +44,7 @@ router.get('/:dateId',
     ShiftController.getDateById
 )
 router.delete ('/:dateId',
+    
     handleInputErrors,
     ShiftController.deleteDate
 )

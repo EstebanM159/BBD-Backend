@@ -5,7 +5,10 @@ import { AdminController } from "../controllers/AdminController";
 import { AuthController } from "../controllers/AuthController";
 const router = Router()
 router.get('/',
-    AdminController.getDateByDay
+    AdminController.getAllDates
+)
+router.get('/:dateString',
+    AdminController.getDatesByDay
 )
 router.post('/auth/create-account',
     body('userName').notEmpty().withMessage('El nombre es obligatorio'),
@@ -27,7 +30,7 @@ router.post('/auth/login',
     handleInputErrors,
     AuthController.login
 )
-router.get('/deletePastDates',
+router.delete('/:dateString/:time/deletePastDates',
     AdminController.deletePastAppointments
 )
 export default router

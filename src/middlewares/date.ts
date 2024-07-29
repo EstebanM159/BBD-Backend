@@ -1,5 +1,5 @@
 import type {Request, Response, NextFunction} from 'express'
-import Date, {IDate} from '../models/DateModel'
+import DateModel, {IDate} from '../models/DateModel'
 declare global {
     namespace Express{
         interface Request{
@@ -11,7 +11,7 @@ declare global {
 export async function dateExists(req:Request, res:Response, next:NextFunction) {
     try {
         const {dateId} = req.params
-        const date = await Date.findById(dateId)
+        const date = await DateModel.findById(dateId)
         if(!date){
             const error = new Error('Turno no encontrado')
             return res.status(404).json({error: error.message})

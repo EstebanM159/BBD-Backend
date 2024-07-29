@@ -2,7 +2,7 @@ import mongoose,{Document, Schema, PopulatedDoc, Types} from "mongoose";
 import { IUser } from "./UserModel";
 export interface IDate extends Document{
     _id:Types.ObjectId,
-    clientId:PopulatedDoc<IUser & Document>,
+    clientId: PopulatedDoc<IUser & Document>,
     date:string,
     time:string,
     service:string
@@ -11,8 +11,8 @@ export interface IDate extends Document{
 const DateSchema: Schema = new Schema({
    
     clientId:{
-        type:Types.ObjectId,
-        ref:'User'
+        type: Types.ObjectId,
+        ref: 'User'
     },
     date:{
         type: String,
@@ -28,5 +28,5 @@ const DateSchema: Schema = new Schema({
     }
 
 })
-const Date = mongoose.model<IDate>('Date', DateSchema)
-export default Date
+const DateModel = mongoose.model<IDate>('Date', DateSchema)
+export default DateModel

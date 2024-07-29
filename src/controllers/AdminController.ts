@@ -1,28 +1,46 @@
 import { Request,Response } from "express"
-import Date from "../models/DateModel"
+import DateModel from "../models/DateModel"
 import { checkPassword, hashPassword } from "../utils"
 import { generateJWT } from "../utils/jwt"
 import User from "../models/UserModel"
 export class AdminController {
-    static getDateByDay = async (req:Request, res:Response) => {
-        // const {dateString} = req.body
-        // const dates = await Date.find({date:dateString})
-        //                         .populate({path:'clientId', select:'_id userName picture'})
-        const dates = await Date.find().sort({ date: -1, time:1}).populate({path:'clientId', select:'_id userName picture'})
+    static getAllDates = async (req:Request, res:Response) => {
+        
+        const dates = await DateModel.find().sort({ date: 'asc', time:1}).populate({path:'clientId', select:'_id userName picture'})
+        res.json(dates)
+    }
+    static getDatesByDay = async (req:Request, res:Response) => {
+        const {dateString} = req.params
+        const dates = await DateModel.find({date:dateString})
+                                .sort({ date: 'asc', time:1})
+                                .populate({path:'clientId', select:'_id userName picture'})
         res.json(dates)
     }
     static deletePastAppointments = async (req:Request, res:Response) => {
-        const {day, time} = req.body
-        await Date.deleteMany({
-            $or:[
-                {
-                    date:{$lt: day},
-                },{
-                    date: day,
-                    time:{$lt: time},
-                }
-            ]
-        })
+        const {dateString, time} = req.params
+            const todayDate = new Date(dateString);
+            const allAppointments = await DateModel.find({})
+            // Filtrar y eliminar los turnos anteriores a la fecha actual
+            const pastAppointments = allAppointments.filter(appointment => {
+            const appointmentDate = new Date(appointment.date);
+            return appointmentDate < todayDate;
+            });
+            const deletePromises = pastAppointments.map(appointment =>
+                DateModel.deleteOne({ _id: appointment._id })
+            );
+            await Promise.all(deletePromises);
+            // await DateModel
+            // console.log(todayDate)
+        // await DateModel.deleteMany({
+        //     $or:[
+        //         {
+        //             date:{$lt: dateString},
+        //         },{
+        //             date: dateString,
+        //             time:{$lt: time},
+        //         }
+        //     ]
+        // })
         res.send('Turnos actualizados')
     }
     static createAccount = async (req:Request,res:Response)=>{

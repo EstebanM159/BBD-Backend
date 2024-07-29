@@ -5,14 +5,13 @@ import User,{IUser} from '../models/UserModel'
 declare global {
     namespace Express{
         interface Request{
-            user?:IUser
+            user:IUser
         }
     }
 }
 
 export const authenticate = async (req:Request,res:Response, next:NextFunction) => {
     const bearer = req.headers.authorization
-    console.log(bearer)
     if(!bearer){
         const error = new Error('No esta autorizado para ingresar a esta sección')
         return res.status(401).json({error:error.message})
@@ -23,7 +22,6 @@ export const authenticate = async (req:Request,res:Response, next:NextFunction) 
         if(typeof decoded === 'object' && decoded.id){
             const user = await User.findById(decoded.id).select('_id userName email picture role')
             if(user){
-                console.log(user.role)
                 req.user = user
                 next()
             }else{
