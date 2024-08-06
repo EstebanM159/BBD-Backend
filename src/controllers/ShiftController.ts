@@ -36,7 +36,6 @@ export class ShiftController {
             const error = new Error('No esta autorizado')
             return res.status(401).json({error:error.message})
         }
-        console.log(req.body.date,req.body.time,req.body.service)
         req.date.date = req.body.date
         req.date.time = req.body.time
         req.date.service = req.body.service

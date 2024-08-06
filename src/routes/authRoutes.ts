@@ -34,4 +34,22 @@ router.get('/user',
     authenticate,
     AuthController.user
 )
+router.post('/forgotPassword', 
+    body('email').isEmail().withMessage('Email no valido'),
+    handleInputErrors,
+    AuthController.forgotPassword)
+router.post('/validate-token', 
+    AuthController.validateToken)
+    router.post('/update-password/:token',
+    param('token').isNumeric().withMessage('token no valido'),
+    body('password').isLength({min:8}).withMessage('La contraseña es muy corta, minimo 8 caracteres'),
+    body('password_confirmation').custom((value,{req})=>{
+        if(value !== req.body.password){
+            throw new Error('Las contraseñas deben ser iguales')
+        }
+        return true
+    }),
+    handleInputErrors,
+    AuthController.updatePasswordWithToken
+) 
 export default router

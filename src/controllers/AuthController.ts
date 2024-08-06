@@ -3,6 +3,10 @@ import User from "../models/UserModel";
 import { checkPassword, hashPassword } from "../utils";
 import  jwt, { decode }  from "jsonwebtoken";
 import { generateJWT } from "../utils/jwt";
+import DateModel from "../models/DateModel";
+import { AuthEmail } from "../emails/AuthEmail";
+import { generateToken } from "../utils/token";
+import Token from "../models/Token";
 
 export class AuthController {
     static CreateAccountWithFacebook = async (req:Request, res:Response) => {
@@ -125,4 +129,64 @@ export class AuthController {
             // console.log(req.user)
              return res.json(req.user)
     }
+    static forgotPassword = async (req:Request, res:Response) => {
+        const {email} = req.body
+        const user = await User.findOne({email})
+        if(!user){
+            const error = new Error('Usuario no registrado')
+            return res.status(404).json({error:error.message})
+        }
+        const token = new Token()
+        token.token = generateToken()
+        token.user=user.id
+        await token.save()
+        
+        AuthEmail.sendPasswordResetToken({
+                email:user.email,
+                userName:user.userName,
+                token: token.token,
+                tokenId: token._id
+        })
+        res.send('Email enviado')
+    }
+    static validateToken = async (req:Request, res:Response) => {
+        try {
+            const {token,tokenId} = req.body
+        const tokenExists = await Token.findOne({token})
+        if(!tokenExists){
+            const error = new Error('Token no valido')
+            return res.status(404).json({error:error.message}) 
+        }
+        if(tokenExists._id.toString() !== tokenId.toString()){
+            const error = new Error('Token no valido')
+            return res.status(401).json({error:error.message}) 
+        }
+        res.send('Token valido, Define tu nueva contraseña')
+        } catch (error) {
+            res.status(500).json({error:'Hubo un error'})
+            
+        }
+    }
+    static updatePasswordWithToken = async (req:Request, res:Response) => {
+        try {
+            const {token} = req.params
+            const {password} = req.body
+            // Verifico que el token existe
+            const tokenExists = await Token.findOne({token})
+            if(!tokenExists){
+                const error = new Error('Token no valido')
+                return res.status(401).json({error : error.message})
+            }
+            // Busco el usuario
+            const user = await User.findById(tokenExists.user)
+            // Hasheo password
+            user.password = await hashPassword(password)
+            // Guardo la contraseña y borro el token
+            await Promise.allSettled([user.save(),tokenExists.deleteOne()])
+            res.send('La contraseña se modificó correctamente')
+        } catch (error) {
+            res.status(500).json({error:'Hubo un error'})
+        }
+    }
+    
 }
