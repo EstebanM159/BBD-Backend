@@ -33,4 +33,7 @@ router.post('/auth/login',
 router.delete('/:dateString/:time/deletePastDates',
     AdminController.deletePastAppointments
 )
+router.delete('/:dateId',
+    AdminController.deleteDate
+)
 export default router

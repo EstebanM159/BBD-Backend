@@ -8,9 +8,9 @@ import AuthRoutes from './routes/authRoutes'
 import AdminRoutes from './routes/adminRoutes'
 dotenv.config();
 connectDB();
-const app = express();
+const app = express()
 app.use(cors(corsConfig))
-app.use(express.json());
+app.use(express.json())
 app.use('/api/auth',AuthRoutes)
 app.use('/api/dates',ShiftRoutes)
 app.use('/api/admin',AdminRoutes)

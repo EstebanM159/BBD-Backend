@@ -84,4 +84,14 @@ export class AdminController {
             res.status(500).json({error:'Hubo un error'})
         }
     }
+    static deleteDate = async (req:Request,res:Response)=>{
+        const {dateId} = req.params
+        const date = await DateModel.findById(dateId)
+        if(!date){
+            const error = new Error('No existe el turno')
+            return res.status(404).json({error:error.message})
+        }
+        await DateModel.deleteOne({_id: date._id})
+        res.status(200).send('Turno eliminado')
+    }
 }
