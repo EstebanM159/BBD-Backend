@@ -8,6 +8,7 @@ export interface IUser extends Document {
     role:string
     facebook_id:string
     google_id:string
+    phone:number
 }
 
 const UserSchema : Schema = new Schema({
@@ -24,6 +25,10 @@ const UserSchema : Schema = new Schema({
     },
     google_id:{
         type:String,
+        default:null
+    },
+    phone:{
+        type:Number,
         default:null
     },
     password:{

@@ -13,7 +13,7 @@ export class AdminController {
         const {dateString} = req.params
         const dates = await DateModel.find({date:dateString})
                                 .sort({ date: 'asc', time:1})
-                                .populate({path:'clientId', select:'_id userName picture'})
+                                .populate({path:'clientId', select:'_id userName picture phone'})
         res.json(dates)
     }
     static deletePastAppointments = async (req:Request, res:Response) => {
