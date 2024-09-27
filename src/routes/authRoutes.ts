@@ -17,8 +17,8 @@ router.post('/create-account',
         return true
     }),
     body('phone').isNumeric().withMessage('El telefono debe ser un numero'),
-    handleInputErrors,
     body('email').isEmail().withMessage('Email no valido'),
+    handleInputErrors,
     AuthController.createAccount
 )
 router.post('/login-withF', AuthController.loginWithFacebook)

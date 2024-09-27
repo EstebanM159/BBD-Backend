@@ -44,7 +44,6 @@ router.get('/:dateId',
     ShiftController.getDateById
 )
 router.delete ('/:dateId',
-    
     handleInputErrors,
     ShiftController.deleteDate
 )

@@ -104,8 +104,8 @@ export class AuthController {
                 })
             
             await user.save()
-            res.send('Cuenta creada correctamente')
         }
+        res.send('Cuenta creada correctamente')
     }
     static loginWithGoogle = async (req:Request,res:Response)=>{
         const {credential} = req.body
