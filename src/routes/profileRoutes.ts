@@ -20,7 +20,7 @@ router.put('/change-password',
 router.put('/update-profile',
     authenticate,
     body('userName').notEmpty().withMessage('El nombre es obligatorio'),
-    // body('phone').isNumeric().withMessage('El telefono debe ser un numero'),
+    body('phone').isNumeric().withMessage('El telefono debe ser un numero'),
     body('email').isEmail().withMessage('Email no valido'),
     handleInputErrors,
     ProfileController.updateProfile

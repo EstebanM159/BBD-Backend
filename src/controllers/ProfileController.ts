@@ -30,7 +30,7 @@ export class ProfileController {
       static updateProfile = async (req:Request, res:Response) => {
         // agregar telefono
        try {
-            const {userName,email} = req.body
+            const {userName,email, phone} = req.body
             const userExists = await User.findOne({email})
             if(userExists && userExists._id.toString() !== req.user.id.toString() ){
                 const error = new Error('Este email ya esta registrado')
@@ -38,6 +38,7 @@ export class ProfileController {
             }
             req.user.userName = userName
             req.user.email = email
+            req.user.phone = phone
             await req.user.save()
             res.send('Perfil actualizado correctamente')
        } catch (error) {
