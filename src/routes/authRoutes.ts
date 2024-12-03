@@ -21,6 +21,9 @@ router.post('/create-account',
     handleInputErrors,
     AuthController.createAccount
 )
+router.get('/',
+    AuthController.test
+)
 router.post('/login-withF', AuthController.loginWithFacebook)
 router.post('/login',
     body('email').isEmail().withMessage('Email no valido'),

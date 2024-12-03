@@ -9,6 +9,10 @@ import { generateToken } from "../utils/token";
 import Token from "../models/Token";
 
 export class AuthController {
+    static test = async (req:Request, res:Response) => {
+        console.log("llego")
+        res.json("Pepe")
+    }
     static CreateAccountWithFacebook = async (req:Request, res:Response) => {
         try {
             const {email, id, name, picture} = req.body
