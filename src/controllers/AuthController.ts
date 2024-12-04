@@ -9,10 +9,7 @@ import { generateToken } from "../utils/token";
 import Token from "../models/Token";
 
 export class AuthController {
-    static test = async (req:Request, res:Response) => {
-        console.log("llego")
-        res.json("Pepe")
-    }
+
     static CreateAccountWithFacebook = async (req:Request, res:Response) => {
         try {
             const {email, id, name, picture} = req.body
@@ -188,6 +185,14 @@ export class AuthController {
             // Guardo la contraseña y borro el token
             await Promise.allSettled([user.save(),tokenExists.deleteOne()])
             res.send('La contraseña se modificó correctamente')
+        } catch (error) {
+            res.status(500).json({error:'Hubo un error'})
+        }
+    }
+    static deleteAccount = async (req:Request,res:Response) =>{
+        try {
+            await req.user.deleteOne()
+            res.send('Usuario Eliminado')
         } catch (error) {
             res.status(500).json({error:'Hubo un error'})
         }

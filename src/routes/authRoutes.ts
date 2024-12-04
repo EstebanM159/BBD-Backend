@@ -21,8 +21,9 @@ router.post('/create-account',
     handleInputErrors,
     AuthController.createAccount
 )
-router.get('/',
-    AuthController.test
+router.delete('/delete',
+    authenticate,
+    AuthController.deleteAccount
 )
 router.post('/login-withF', AuthController.loginWithFacebook)
 router.post('/login',
