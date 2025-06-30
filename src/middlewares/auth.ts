@@ -1,7 +1,7 @@
 import {Request, Response, NextFunction} from 'express'
 import jwt from 'jsonwebtoken'
 import User,{IUser} from '../models/UserModel'
-
+// esto permite guardar en en la request el user
 declare global {
     namespace Express{
         interface Request{
