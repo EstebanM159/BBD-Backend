@@ -7,6 +7,7 @@ import DateModel from "../models/DateModel";
 import { AuthEmail } from "../emails/AuthEmail";
 import { generateToken } from "../utils/token";
 import Token from "../models/Token";
+import { error } from "node:console";
 
 export class AuthController {
 
@@ -44,7 +45,6 @@ export class AuthController {
             await user.save()
             res.send('Cuenta creada correctamente')
         } catch (error) {
-            console.log(error)
             res.status(500).json({error:'Hubo un error'})
         }
     }
@@ -72,7 +72,12 @@ export class AuthController {
                 return res.status(404).json({error : error.message})
             }
             // Verifico si tiene contraseña
+            if(!user.password) {
+                const error = new Error('Acceso denegado, intente por otra via [Google/Facebook]')
+                return res.status(401).json({error:error.message})
+            }
             const isPasswordCorrect = await checkPassword(password, user.password)
+            
             if(!isPasswordCorrect){
                 const error = new Error('Contraseña incorrecta.')
                 return res.status(401).json({error : error.message})
@@ -82,7 +87,7 @@ export class AuthController {
             res.send(token)
             // Esto se consume en el frontend
         } catch (error) {
-            console.log(error)
+            console.log(error+'error')
             res.status(500).json({error:'Hubo un error'})
         }
     }
@@ -164,8 +169,7 @@ export class AuthController {
         }
         res.send('Token valido, Define tu nueva contraseña')
         } catch (error) {
-            res.status(500).json({error:'Hubo un error'})
-            
+            res.status(500).json({error:'Hubo un error'})      
         }
     }
     static updatePasswordWithToken = async (req:Request, res:Response) => {
